@@ -1,0 +1,11 @@
+1. Fetch image name and annotation coordinates from server (JavaScript fetch)
+
+2. Display image and add bounding rectangle
+
+3. Send new coords and image name back to server (JS fetch)
+
+4. Save coords to file
+
+5. Get name of next file in the folder
+
+6. Repeat

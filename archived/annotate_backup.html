@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Squirrel Detector</title>
+    <link rel="icon" href="static/images/favicon.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="static/images/favicon.png" type="image/x-icon"/>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/static/css/style.css">
+   <style>
+    .big-checkbox {width: 20px; height: 20px;}
+   </style>
+       <script src="fabric.min.js"></script>
+  </head>
+  <body>
+		
+		<div class="d-flex align-items-stretch">
+            <nav id="sidebar">
+				<div class="p-4 pt-5">
+		  		<a href="index.html" class="img logo mb-5" ><img src="/static/images/sq.png" style="width:150px;height:150px"></a>
+	        <ul class="list-unstyled components mb-5">
+
+	          <li>
+	              <a href="index.html">Home</a>
+	          </li>
+	          <li>
+              <a href="collect.html">1. Collect</a>
+	          </li>
+	          <li class="active">
+              <a href="annotate.html">2. Annotate</a>
+	          </li>
+	          <li>
+              <a href="train.html" class="text-secondary">3. Train</a>
+	          </li>
+	          <li>
+              <a href="detect.html" class="text-secondary">4. Detect</a>
+	          </li>            
+	          <li>
+              <a href="manage.html" >Manage</a>
+	          </li>                
+	        </ul>
+
+	        <div class="footer fixed-bottom ml-3">
+	        	<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						  Copyright &copy; 2023 All rights reserved <br> Template provided by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
+	        </div>
+
+	      </div>
+    	</nav>
+
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
+              <i class="fa fa-bars"></i>
+              <span class="sr-only">Toggle Menu</span>
+            </button>
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Help</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
+
+        <div class="jumbotron d-flex justify-content-center flex-wrap custom-control custom-checkbox image-checkbox">
+
+            <div class="card m-2 text-white bg-secondary " style="width: 280px;">
+                <div class="card-header">
+                    <h4 class="text-warning">Annotation</h4>
+                  </div> 
+                    <div class="card-body" >
+                      If the image contains a squirrel and the bounding box is correctly positioned, then it 
+                      is acceptable for training and should be checked. 
+                      </p>
+                    </div>
+            </div>
+            <div class="card m-2" style="width: 281px">
+              <canvas id="c" class="canvas card-img-top"></canvas>
+                <div class="card-body text-center">
+                  <input type="checkbox" class="big-checkbox" />
+                </div>
+            </div>
+            <div class="card m-2" style="width: 281px">
+              <canvas id="d" class="canvas card-img-top"></canvas>
+                <div class="card-body text-center">
+                  <input type="checkbox" class="big-checkbox" />
+                </div>
+            </div>                      
+
+            <div class="card m-2" style="width: 18rem;">
+                <img class="card-img-top" src="/static/images/small.jpg" alt="Card image cap">
+                <div class="card-body text-center">
+                  <input type="checkbox" class="big-checkbox" />
+                </div>
+            </div>
+                  
+        </div>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
+      </div>
+
+		</div>
+
+
+
+   <script type="text/javascript">
+           var canvasC = new fabric.Canvas('c');
+           canvasC.backgroundColor = '#333';
+           canvasC.setDimensions({width:280, height:280});
+
+           var canvasD = new fabric.Canvas('d');
+           canvasD.backgroundColor = '#777';
+           canvasD.setDimensions({width:280, height:280});
+           
+           fabric.Image.fromURL("/static/images/sqA.jpg", function (img) {    
+               canvasC.setBackgroundImage(img, canvasC.renderAll.bind(canvasC), {
+                   scaleX: .75,
+                   scaleY: .75
+               });
+           });
+
+           fabric.Image.fromURL("/static/images/sqB.jpg", function (img) {    
+               canvasD.setBackgroundImage(img, canvasD.renderAll.bind(canvasD), {
+                scaleX: .75,
+                   scaleY: .75
+               });
+           });
+
+           // create a rectangle with angle=45
+           var rect = new fabric.Rect({
+               left: 20,
+               top: 20,
+               fill:'transparent',
+               width: 100,
+               height: 100,
+               strokewidth: 1,
+               stroke: '#f5ef42',
+               strokeUniform: true
+           });
+
+           canvasC.add(rect);
+           canvasC.item(0).lockRotation = true;
+           rect.setControlsVisibility({ mtr: false })
+
+
+           // create a rectangle with angle=45
+           var rect2 = new fabric.Rect({
+               left: 20,
+               top: 20,
+               fill:'transparent',
+               width: 100,
+               height: 100,
+               strokewidth: 1,
+               stroke: '#f5ef42',
+               strokeUniform: true
+           });
+
+           canvasD.add(rect2);
+           canvasD.item(0).lockRotation = true;
+           rect2.setControlsVisibility({ mtr: false })
+
+
+
+
+           canvasC.on('mouse:up', onMouseUp);
+
+           // Assign object width and height to width and height variables
+           // Change the vars if a scale even occurs
+           // Need to so this because the scale values are null until a scale action occurs
+           cwidth = rect.width;
+           cheight = rect.height;
+           ctop = rect.top;
+           cleft = rect.left;
+
+           function onMouseUp(e) {
+               targetObject = e.target;
+               console.log('Width =  '+ cwidth);
+               console.log('Height =  '+ cheight);
+               console.log('X = '+ cleft);     
+               console.log('Y = '+ ctop);           
+           }
+
+           function onScale(e) {
+               targetObject = e.target;
+               cwidth = targetObject.getScaledWidth();
+               cheight = targetObject.getScaledHeight();
+               ctop = targetObject.get('top');
+               cleft = targetObject.get('left');
+           }
+
+           canvasC.on('mouse:up', onMouseUp);
+           canvasC.on('object:scaling', onScale);
+
+    </script>
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/popper.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/main.js"></script>
+  </body>
+</html>

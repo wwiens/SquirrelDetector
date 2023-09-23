@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Squirrel Detector</title>
+    <link rel="icon" href="static/images/favicon.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="static/images/favicon.png" type="image/x-icon"/>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css" rel="stylesheet" />       
+    <script src="/static/js/fabric.min.js"></script>
+  </head>
+  <body>
+		
+		<div class="d-flex align-items-stretch">
+            <nav id="sidebar">
+				<div class="p-4 pt-5">
+		  		<a href="index.html" class="img logo mb-5" ><img src="/static/images/sq.png" style="width:150px;height:150px"></a>
+	        <ul class="list-unstyled components mb-5">
+
+	          <li>
+	              <a href="index.html">Home</a>
+	          </li>
+	          <li>
+              <a href="collect.html">1. Collect</a>
+	          </li>
+	          <li class="active">
+              <a href="annotate.html">2. Annotate</a>
+	          </li>
+	          <li>
+              <a href="train.html" class="text-secondary">3. Train</a>
+	          </li>
+	          <li>
+              <a href="detect.html" class="text-secondary">4. Detect</a>
+	          </li>            
+	          <li>
+              <a href="manage.html" >Manage</a>
+	          </li>                
+	        </ul>
+
+	        <div class="footer fixed-bottom ml-3">
+	        	<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						  Copyright &copy; 2023 All rights reserved <br> Template provided by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
+	        </div>
+
+	      </div>
+    	</nav>
+
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5">
+
+
+            <div class="jumbotron d-flex align-items-center justify-content-center text-center">
+                        
+                <div class="align-items-center mr-4">
+                  <button type="button" class="btn btn-primary btn-floating" style="width:80px; height:80px">
+                    <i class="fas fa-caret-left fa-3x"></i>
+                  </button>
+                </div>
+                
+                <div class="card m-2" style="min-width: 640px">
+                  <canvas id="c" class="canvas card-img-top"></canvas>
+                    <div class="card-body" style="display: flex; justify-content: space-between; align-items: end">
+                      <div><h5 id="demo">6 / 324 </h5></div>
+                      <div><a class="btn btn-danger btn-lg mt-auto" href="#" role="button">Delete</a></div>
+                      
+                    </div>
+                </div>
+        
+                <div class="align-items-center ml-4">
+                  <button type="button" id="btn-next" class="btn btn-primary btn-floating" style="width:80px; height:80px">
+                    <i class="fas fa-caret-right fa-3x"></i>
+                  </button>
+                </div>
+        
+            </div>
+        
+          </div>
+           
+        </div>
+
+
+
+
+   <script type="text/javascript">
+
+      /*
+        Annotation notes
+        1. The image is 640 x 480
+
+        The annotations will be saved to an XML file in Pascal format
+        Let's use 
+
+        <annotation>
+          <folder>images</folder>
+          <filename>image1.jpg</filename>
+          <path>/home/user/images/image1.jpg</path>
+          <source>
+            <database>Unknown</database>
+          </source>
+          <size>
+            <width>640</width>
+            <height>480</height>
+            <depth>3</depth>
+          </size>
+          <segmented>0</segmented>
+          <object>
+            <name>dog</name>
+            <pose>Left</pose>
+            <truncated>1</truncated>
+            <difficult>0</difficult>
+            <bndbox>
+              <xmin>123</xmin>
+              <ymin>117</ymin>
+              <xmax>198</xmax>
+              <ymax>198</ymax>
+            </bndbox>
+          </object>
+
+
+
+      */
+          var generateBtn = document.getElementById('btn-next');
+          generateBtn.addEventListener('click', fetchData);
+
+ 
+
+
+          fabric.Object.prototype.set({
+              transparentCorners: false,
+              borderColor: '#ffff00',
+              cornerColor: '#ffff00'
+          }); 
+
+           var canvasC = new fabric.Canvas('c');
+           canvasC.backgroundColor = '#333';
+           canvasC.setDimensions({width:640, height:480});
+
+           
+           fabric.Image.fromURL("/img/a.png", function (img) {    
+               canvasC.setBackgroundImage(img, canvasC.renderAll.bind(canvasC), {
+                   scaleX: 1,
+                   scaleY: 1
+               });
+           });
+
+           // create a rectangle with angle=45
+           var rect = new fabric.Rect({
+               left: 20,
+               top: 20,
+               fill:'transparent',
+               width: 100,
+               height: 100,
+               strokewidth: 1,
+               stroke: '#f5ef42',
+               strokeUniform: true
+           });
+
+           canvasC.add(rect);
+           canvasC.item(0).lockRotation = true;
+           rect.setControlsVisibility({ mtr: false })
+
+
+           canvasC.on('mouse:up', onMouseUp);
+
+           // Assign object width and height to width and height variables
+           // Change the vars if a scale even occurs
+           // Need to so this because the scale values are null until a scale action occurs
+           cwidth = rect.width;
+           cheight = rect.height;
+           ctop = rect.top;
+           cleft = rect.left;
+
+           function onMouseUp(e) {
+               targetObject = e.target;
+               console.log('Width =  '+ cwidth);
+               console.log('Height =  '+ cheight);
+               console.log('X = '+ cleft);     
+               console.log('Y = '+ ctop);           
+           }
+
+           function onScale(e) {
+               targetObject = e.target;
+               cwidth = targetObject.getScaledWidth();
+               cheight = targetObject.getScaledHeight();
+               ctop = targetObject.get('top');
+               cleft = targetObject.get('left');
+           }
+
+           canvasC.on('mouse:up', onMouseUp);
+           canvasC.on('object:scaling', onScale);
+
+
+           fabric.Object.prototype.noScaleCache = true;
+
+          function fetchData() {
+            //alert("Fetch");
+            fetch('http://127.0.0.1:5500/templates/get_next_image.txt')
+              .then(function (response) {
+                if (response.status !== 200) {
+                  console.log(
+                    'Looks like there was a problem. Status Code: ' + response.status
+                  );
+                  return;
+                }
+                response.json().then(function (data) {
+                  console.log(data);
+                  console.log(data.image);
+                  document.getElementById('demo').innerText = data.image;
+                  newimage = "/img/" + data.image;
+                  fabric.Image.fromURL(newimage, function (img) {    
+                    canvasC.setBackgroundImage(img, canvasC.renderAll.bind(canvasC), {
+                    scaleX: 1,
+                    scaleY: 1
+                    });
+                  });
+
+                  console.log("X = " + data.x)
+                  console.log("Y = " + data.y)
+                  console.log("W = " + data.w)
+                  console.log("H = " + data.h);
+
+
+
+                  rect.set({
+                    left: data.x,
+                    top: data.y,
+                    width: data.w,
+                    height: data.h,
+                    visible:true,
+                    scaleX: 1,
+                    scaleY: 1
+                  });
+
+                  rect.setCoords();
+                  canvasC.renderAll();
+
+                });
+              })
+              .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+              });
+          }
+
+
+    </script>
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/popper.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"></script>    
+  </body>
+</html>

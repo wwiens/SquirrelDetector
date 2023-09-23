@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Squirrel Detector</title>
+    <link rel="icon" href="static/images/favicon.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="static/images/favicon.png" type="image/x-icon"/>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/static/css/style.css">
+  </head>
+  <body>
+		
+		<div class="d-flex align-items-stretch">
+      <nav id="sidebar">
+				<div class="p-4 pt-5">
+		  		<a href="index.html" class="img logo mb-5" ><img src="/static/images/sq.png" style="width:150px;height:150px"></a>
+	        <ul class="list-unstyled components mb-5">
+
+	          <li>
+	              <a href="index.html">Home</a>
+	          </li>
+	          <li class="active">
+              <a href="collect.html">1. Collect</a>
+	          </li>
+	          <li>
+              <a href="annotate.html" class="text-secondary">2. Annotate</a>
+	          </li>
+	          <li>
+              <a href="train.html" class="text-secondary">3. Train</a>
+	          </li>
+	          <li>
+              <a href="detect.html" class="text-secondary">4. Detect</a>
+	          </li>            
+	          <li>
+              <a href="manage.html" >Manage</a>
+	          </li>                
+	        </ul>
+
+	        <div class="footer fixed-bottom ml-3">
+	        	<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						  Copyright &copy; 2023 All rights reserved <br> Template provided by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
+	        </div>
+
+	      </div>
+    	</nav>
+
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
+              <i class="fa fa-bars"></i>
+              <span class="sr-only">Toggle Menu</span>
+            </button>
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="help.html">Help</a>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </nav>
+
+        <div class="jumbotron d-flex justify-content-center flex-wrap custom-control custom-checkbox image-checkbox">
+
+
+          <div class="card m-2" style="width: 500px">
+            <div class="card-header">
+              <h4>Collect Images</h4>
+            </div> 
+              <div class="card-body " >
+                There are two methods for collecting images:
+                <ul>
+                  <li><span class="font-weight-bold">Still Shots:</span> In this method, you will treat the video camera like a regular
+                    camera and take still shots manually. Just press "Take Photo" to take a picture.
+                  </li>
+                  <li><span class="font-weight-bold">Motion Capture:</span> This method will activate the video camera and monitor for motion.
+                    When motion is detected, it will automatically take a picture. It will also save the coordinates of the detected object
+                    which can be used during annotation.
+                  </li>                  
+                </ul>
+
+                <p class="lead mt-5 text-center">
+                  <a class="btn btn-info btn-lg mb-2" href="still.html" role="button" style="width:350px">Start Still Camera</a>
+                  <a class="btn btn-info btn-lg mt-auto" href="#" role="button" style="width:350px">Start Motion Capture</a>
+                </p>
+
+              </div>
+          </div>
+         
+
+      </div>
+      </div>
+		</div>
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/popper.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/main.js"></script>
+  </body>
+</html>
